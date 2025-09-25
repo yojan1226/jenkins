@@ -1,17 +1,17 @@
 pipeline {
-    agent {
-        docker { 
-            image 'node:16-alpine'
-            args '-v C:/ProgramData/Jenkins/.jenkins/workspace/docker_pipeline_demo:/workspace -w /workspace'
-        }
+  agent {
+    docker {
+      image 'node:16-alpine'
     }
-    stages {
-        stage('test') {
-            steps {
-                sh 'pwd'
-                sh 'node --version'
-            }
-        }
+  }
+  stages {
+    stage('Test') {
+      steps {
+        sh 'pwd'
+        sh 'node --version'
+      }
     }
+  }
 }
+
 
