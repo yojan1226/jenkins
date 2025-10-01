@@ -1,11 +1,49 @@
 pipeline {
-    agent none   // no global agent, stages will define their own
+    agent any
+
+    environment {
+        IMAGE_NAME = "honey120ar/carrental"
+        CONTAINER_NAME = "carrental"
+        PORT = "3000"
+    }
+
     stages {
-        stage('carrental container creation') {
-            agent { label 'docker' }   // run on agent with 'docker' label
+        stage('Pull GitHub Repo') {
             steps {
-                sh './script.sh'    // execute your script
+                // Checkout your repository
+                checkout scm
             }
+        }
+
+        stage('Stop Existing Container') {
+            steps {
+                script {
+                    // Stop and remove container if it already exists
+                    sh """
+                        if [ \$(docker ps -a -q -f name=${CONTAINER_NAME}) ]; then
+                            docker stop ${CONTAINER_NAME} || true
+                            docker rm ${CONTAINER_NAME} || true
+                        fi
+                    """
+                }
+            }
+        }
+
+        stage('Run Docker Container') {
+            steps {
+                script {
+                    sh "docker run -d --name ${CONTAINER_NAME} -p ${PORT}:${PORT} ${IMAGE_NAME}"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Docker container ${CONTAINER_NAME} is up and running!"
+        }
+        failure {
+            echo "Failed to run Docker container."
         }
     }
 }
