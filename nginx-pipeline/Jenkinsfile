@@ -1,13 +1,11 @@
 pipeline {
-    agent none
+    agent none   // no global agent, stages will define their own
     stages {
-        stage ('carrental container creation') {
-            agent { label 'docker' }
+        stage('carrental container creation') {
+            agent { label 'docker' }   // run on agent with 'docker' label
             steps {
-                bash script.sh
+                sh 'bash script.sh'    // execute your script
             }
-
-         }
-
-       }
+        }
     }
+}
