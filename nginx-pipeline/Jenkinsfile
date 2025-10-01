@@ -4,7 +4,7 @@ pipeline {
         stage('carrental container creation') {
             agent { label 'docker' }   // run on agent with 'docker' label
             steps {
-                sh 'bash script.sh'    // execute your script
+                sh './script.sh'    // execute your script
             }
         }
     }
