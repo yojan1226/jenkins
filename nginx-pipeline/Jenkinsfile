@@ -43,7 +43,7 @@ pipeline {
             echo "Docker container ${CONTAINER_NAME} is up and running!"
         }
         failure {
-            echo "Failed to run Docker container."
+            echo "Failed to run Docker container, build failed"
         }
     }
 }
